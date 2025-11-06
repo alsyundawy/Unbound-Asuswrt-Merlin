@@ -1,6 +1,6 @@
 #!/bin/sh
 # shellcheck disable=SC2086,SC2068,SC1087,SC2039,SC2155,SC2124,SC2027,SC2046
-VERSION="3.25"
+VERSION="3.26"
 #============================================================================================ © 2019-2024 Martineau v3.25
 #  Install 'unbound - Recursive,validating and caching DNS resolver' package from Entware on Asuswrt-Merlin firmware.
 #
@@ -58,7 +58,7 @@ VERSION="3.25"
 #  See SNBForums thread https://tinyurl.com/s89z3mm for helpful user tips on unbound usage/configuration.
 
 # Maintainer: Martineau
-# Last Updated Date: 21-Jun-2024
+# Last Updated Date: 06-Nov-2025
 #
 # Description:
 #
@@ -493,13 +493,13 @@ Show_status() {
         fi
         # If bind 'outgoing-interface' ENABLED, might be prudent to check that the interface is UP? otherwise SERVFAIL for ALL requests.
         if [ -n "$(grep "^outgoing-interface" ${CONFIG_DIR}unbound.conf)" ];then   # v3.16
-            # Use obscure but benign URLthat most will never reference.....
-            if [ -z "$(nslookup amdahl.com | grep -woE '([0-9]{1,3}\.){3}[0-9]{1,3}' | awk 'NR>2')" ];then
+            # Use benign URL that most will never reference.....Changed to ibm.com due to amdahl.com going down Nov-03-2025 @ViktorJp
+            if [ -z "$(nslookup ibm.com | grep -woE '([0-9]{1,3}\.){3}[0-9]{1,3}' | awk 'NR>2')" ];then   # v3.26
                 echo -e $cBRED"\a\n***ERROR unbound ${cRESET}configuration contains 'outgoing-interface' and nslookup fails? use $cBMAG'bind [disable]'$cRESET to reset\n"$cRESET
                 SayT "***ERROR unbound ${cRESET}configuration contains 'outgoing-interface' and nslookup fails? "
             fi
             # .....Remove it from the cache to prevent a false-positive for next time.
-            $UNBOUNCTRLCMD flush amdahl.com 1>/dev/null   # v3.16
+            $UNBOUNCTRLCMD flush ibm.com 1>/dev/null   # v3.16 v3.26
         fi
     fi
 }
